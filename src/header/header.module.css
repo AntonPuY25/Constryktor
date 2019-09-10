@@ -1,0 +1,121 @@
+
+nav{
+    width:100%;
+    height: 150px;
+    background-color:rgba(141, 156, 163, 0.274);
+}
+.logo{
+    padding: 30px;
+    border: 1px solid black;
+    width:40px;
+    height: 30px;
+    text-align: center;
+    position: relative;
+    left:60px;
+    top:20px;
+
+}
+.imgLogo img{
+    width:100px;
+     height:90px;
+   position: absolute;
+   left:0px;
+    top:0px;
+}
+.imgLogo img:hover{
+  width:120px;
+  height:110px;
+}
+.logo:hover{
+    padding: 40px;
+     cursor: pointer;
+       border: 0.5px solid rgb(241, 150, 150);
+
+}
+.hideInpit{
+    display:none;
+}
+.plusLogo img{
+    width: 20px;
+    position: relative;
+    top:25px;
+    left:80px;
+cursor: pointer;
+float: left;
+}
+.nameMenu{
+   
+    position: relative;
+    text-align: center;
+    top:30px;
+}
+.nameSite:hover{
+padding: 3px;
+ cursor: pointer;
+   border: 0.5px solid rgb(241, 150, 150);
+}
+.nameMenu img{
+    width: 15px;
+    position: relative;
+    display: none;
+cursor: pointer;
+top:30px;
+}
+
+.nameSite{
+    display: inline-block;
+    font-family: 'Montserrat', sans-serif;
+    font-style:italic;
+    font-weight:lighter;
+    font-size:25px;
+    position:relative;
+    top:20px;
+
+}
+.nameSiteTextarea{
+    display: none;
+    border: 0px;
+}
+
+input[name=name]{
+   width:200px;
+   height: 50px;
+}
+
+
+.grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.5fr
+}
+ 
+.linkAbout{
+  position: relative;
+    top:45px;
+    padding:5px;
+    display: inline-block;
+    font-family: 'Montserrat', sans-serif;
+    font-style:italic;
+    font-weight:lighter;
+    font-size:25px;
+    position:relative;
+}
+.linkAbout input{
+    border:0;
+}
+
+.linkAbout img{
+    width: 15px;
+    position: relative;
+    display: none;
+    cursor: pointer;
+    top:30px;
+}
+.ownSiteinput{
+    display:none;
+}
+
+.linkAbout  :nth-child(1):hover{
+    padding: 5px;
+     cursor: pointer;
+       border: 0.5px solid rgb(241, 150, 150);
+    }
