@@ -26,10 +26,8 @@ class Header extends React.Component {
     this.myRefNewsPlus = React.createRef();
     this.myRefSpanNews = React.createRef();
 
-
     this.fileRef = React.createRef();
     this.myInputLogo = React.createRef();
-
 
     this.state = {
       textNameSite: "Name for you site",
@@ -39,9 +37,9 @@ class Header extends React.Component {
       textNews: "Новости"
     };
   }
-  
+
   addPhoto = () => {
-    this.myInputLogo.current.click()
+    this.myInputLogo.current.click();
   };
 
   mouseOverLogo = () => {
@@ -148,24 +146,22 @@ class Header extends React.Component {
     });
   };
 
-
-     handleFileSelect=(evt)=> {
+  handleFileSelect = evt => {
     let file = evt.target.files;
     let f = file[0];
 
     let reader = new FileReader();
-    
-    reader.onload = (()=> {
-        return (e)=> {
-            let span = document.createElement('span');
-            span.innerHTML = ['<img " src="', e.target.result, '" />'].join('');
-            this.fileRef.current.insertBefore(span, null);
-        };
-    })(f);
-   
-    reader.readAsDataURL(f);
-};
 
+    reader.onload = (() => {
+      return e => {
+        let span = document.createElement("span");
+        span.innerHTML = ['<img " src="', e.target.result, '" />'].join("");
+        this.fileRef.current.insertBefore(span, null);
+      };
+    })(f);
+
+    reader.readAsDataURL(f);
+  };
 
   render() {
     return (
@@ -176,18 +172,30 @@ class Header extends React.Component {
               className={styles.logo}
               onMouseOver={this.mouseOverLogo}
               onMouseOut={this.mouseOutLogo}
-            >LOGO
-            <input type="file"  className={styles.hideInpit} ref={this.myInputLogo}
-            onChange={this.handleFileSelect} name="file" />
-              <span className={styles.imgLogo} ref={this.fileRef}  id="output"></span>
-             
-              <div> <span
-                ref={this.myRefLogo}
-                className={styles.plusLogo}
-                onClick={this.addPhoto}
-              >
-                <img src={plus} alt="add" />
-              </span></div>
+            >
+              LOGO
+              <input
+                type="file"
+                className={styles.hideInpit}
+                ref={this.myInputLogo}
+                onChange={this.handleFileSelect}
+                name="file"
+              />
+              <span
+                className={styles.imgLogo}
+                ref={this.fileRef}
+                id="output"
+              ></span>
+              <div>
+                {" "}
+                <span
+                  ref={this.myRefLogo}
+                  className={styles.plusLogo}
+                  onClick={this.addPhoto}
+                >
+                  <img src={plus} alt="add" />
+                </span>
+              </div>
             </div>{" "}
             {/*  ЛОГО */}
             <div className={styles.nameMenu}>
@@ -213,9 +221,6 @@ class Header extends React.Component {
               />
             </div>
             {/*  Name */}
-
-
-            
             <div>
               <div className={styles.linkAbout}>
                 <span
@@ -229,7 +234,6 @@ class Header extends React.Component {
                   type="text"
                   onChange={this.setTextOwneSite}
                   name="own"
-                  type="text"
                   ref={this.myRefinputOwn}
                   className={styles.ownSiteinput}
                 />
@@ -250,7 +254,6 @@ class Header extends React.Component {
                   {this.state.textPortfolio}
                 </span>
                 <input
-                  type="text"
                   onChange={this.setTextPortfolioSite}
                   name="own"
                   type="text"
@@ -277,7 +280,6 @@ class Header extends React.Component {
                   type="text"
                   onChange={this.setTextAboutSite}
                   name="own"
-                  type="text"
                   ref={this.myRefinputAbout}
                   className={styles.ownSiteinput}
                 />
@@ -301,7 +303,6 @@ class Header extends React.Component {
                   type="text"
                   onChange={this.setTextNewsSite}
                   name="own"
-                  type="text"
                   ref={this.myRefinputNews}
                   className={styles.ownSiteinput}
                 />

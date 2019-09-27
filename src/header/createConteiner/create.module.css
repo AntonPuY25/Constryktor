@@ -1,0 +1,72 @@
+.addPhoto img{
+    width: 20px;
+    position: relative;
+  
+    cursor: pointer;
+    float: left;
+}
+.addConteiner img{
+    width: 20px;
+    position: relative;
+   
+    cursor: pointer;
+    float: left;
+}
+#divphoto{
+    width:300px;
+    height:200px;
+    border: 1px solid black;
+}
+#divConteiner{
+    width:300px;
+    height:200px;
+    border: 1px solid black;
+    position: absolute;
+}
+.addComponent img{
+    position: fixed;
+    width: 30px;
+    right:20px;
+    top:160px;
+    cursor: pointer;
+    z-index: 10;
+}
+.board{
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.allDiv{
+    border: 1px solid black;
+    width: 100%;
+    height:300px;
+    background-color: aqua;
+    position: relative;
+}
+.spanBlog{
+    position: relative;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 40px;
+    padding: 10px;
+    z-index: 10;
+}
+
+.blogInner{
+    position: absolute;
+    width: 400px;
+    height:150px;
+    background-color: yellowgreen;
+}
+.spanPhoto{
+    position: relative;
+    text-align: right;
+    float: left;
+    font-weight: bold;
+    font-size: 40px;
+    cursor: pointer;
+    z-index: 8;
+    }
+    .hideInpit{
+        display:none;
+    }
