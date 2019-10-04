@@ -1,9 +1,9 @@
 import React from "react";
-import plus from "../../img/plus.png";
 import styles from "../createConteiner/create.module.css";
 class createComponent extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {};
   }
   array = [];
@@ -13,6 +13,7 @@ class createComponent extends React.Component {
     photoDiv,
     blogDiv,
     colorAllDiv,
+    photoData,
     photoPosX,
     photoPosY,
     blogPosX,
@@ -27,6 +28,12 @@ class createComponent extends React.Component {
     spanBlog.className = styles.spanBlog;
     spanBlog.textContent = "+";
     var divBlog;
+    var deltaYBlog;
+    var deltaXBlog;
+    var trackMouseDivBlog = event => {
+      divBlog.style.cssText = `top:${event.pageY -
+        deltaYBlog}px;left:${event.pageX - deltaXBlog}px;`;
+    };
     spanBlog.onclick = () => {
       var objDiv = {
         divBlog: "div",
@@ -38,18 +45,39 @@ class createComponent extends React.Component {
       divConteiner.appendChild(spanBlog);
       divConteiner.appendChild(spanPhoto);
       photoDiv.forEach(item => {
-        divPhoto = document.createElement(item.inputPhoto);
-        divPhoto.type = item.type;
+        divPhoto = document.createElement("div");
         divPhoto.style.cssText = `top:${photoPosY}px;left:${photoPosX}px;`;
         divPhoto.className = item.class;
+        divPhotos = document.createElement("input");
+        divPhotos.type = "file";
+        let span = document.createElement("div");
+        span.className = item.classPhoto;
+        span.innerHTML = [
+          '<img " src="',
+          this.array[index].photoData,
+          '" />'
+        ].join("");
+        divPhoto.insertBefore(span, null);
+
+        divPhoto.appendChild(divPhotos);
         divConteiner.appendChild(divPhoto);
       });
 
       blogDiv.forEach(item => {
         divBlog = document.createElement(item.divBlog);
-        divBlog.style.cssText = `top:${blogPosY}px;left:${blogPosX}px;`;
+        divBlog.style.cssText = `top:${blogPosY}px; left:${blogPosX}px;`;
         divBlog.className = item.class;
         divBlog.textContent = item.text;
+        divBlog.onmousedown = event => {
+          window.addEventListener("mousemove", trackMouseDivBlog);
+          deltaYBlog = event.pageY - divBlog.offsetTop;
+          deltaXBlog = event.pageX - divBlog.offsetLeft;
+        };
+        divBlog.onmouseup = () => {
+          window.removeEventListener("mousemove", trackMouseDivBlog);
+          this.array[index].blogPosX = divBlog.offsetLeft;
+          this.array[index].blogPosY = divBlog.offsetTop;
+        };
         divConteiner.appendChild(divBlog);
       });
     };
@@ -57,13 +85,13 @@ class createComponent extends React.Component {
     let spanPhoto = document.createElement("span");
     spanPhoto.className = styles.spanPhoto;
     spanPhoto.textContent = "+";
+    this.myInputLogo = React.createRef();
     var divPhoto;
+    var divPhotos;
     spanPhoto.onclick = () => {
       let objPhoto = {
-        inputPhoto: "input",
-        type:"file",
         class: `${styles.hideInput}`,
-        onChange: `${this.handleFileSelect}`
+        classPhoto: `${styles.classPhoto}`
       };
       this.array[index].photoDiv.push(objPhoto);
       divConteiner.innerHTML = "";
@@ -71,41 +99,91 @@ class createComponent extends React.Component {
       divConteiner.appendChild(spanPhoto);
       blogDiv.forEach(item => {
         divBlog = document.createElement(item.divBlog);
-        divBlog.style.cssText = `top:${blogPosY}px;left:${blogPosX}px;`;
+        divBlog.style.cssText = `top:${blogPosY}px; left:${blogPosX}px;`;
         divBlog.className = item.class;
         divBlog.textContent = item.text;
+        divBlog.onmousedown = event => {
+          divConteiner.addEventListener("mousemove", trackMouseDivBlog);
+          deltaYBlog = event.pageY - divBlog.offsetTop;
+          deltaXBlog = event.pageX - divBlog.offsetLeft;
+        };
+        divBlog.onmouseup = () => {
+          divConteiner.removeEventListener("mousemove", trackMouseDivBlog);
+          this.array[index].blogPosX = divBlog.offsetLeft;
+          this.array[index].blogPosY = divBlog.offsetTop;
+        };
         divConteiner.appendChild(divBlog);
       });
       photoDiv.forEach(item => {
-        divPhoto = document.createElement(item.inputPhoto);
-        divPhoto.type = item.type;
+        divPhoto = document.createElement("div");
         divPhoto.style.cssText = `top:${photoPosY}px;left:${photoPosX}px;`;
         divPhoto.className = item.class;
+        divPhotos = document.createElement("input");
+        divPhotos.type = "file";
+        divPhotos.click();
+        divPhotos.onchange = event => {
+          let file = event.target.files;
+          let f = file[0];
+
+          let reader = new FileReader();
+
+          reader.onload = (event => {
+            return event => {
+              this.array[index].photoData = event.target.result;
+              let span = document.createElement("div");
+              span.className = item.classPhoto;
+              span.innerHTML = [
+                '<img " src="',
+                this.array[index].photoData,
+                '" />'
+              ].join("");
+              divPhoto.insertBefore(span, null);
+            };
+          })(f);
+
+          reader.readAsDataURL(f);
+        };
+
+        divPhoto.appendChild(divPhotos);
         divConteiner.appendChild(divPhoto);
       });
     };
 
-    //   <input
-    //   type="file"
-    //   className={styles.hideInpit}
-    //   ref={this.myInputLogo}
-    //   onChange={this.handleFileSelect}
-    //   name="file"
-    // />
     photoDiv.forEach(item => {
-      divPhoto = document.createElement(item.inputPhoto);
-      divPhoto.type = item.type;
+      divPhoto = document.createElement("div");
       divPhoto.style.cssText = `top:${photoPosY}px;left:${photoPosX}px;`;
       divPhoto.className = item.class;
+      divPhotos = document.createElement("input");
+      divPhotos.type = "file";
+
+      let span = document.createElement("div");
+      span.className = item.classPhoto;
+      span.innerHTML = [
+        '<img " src="',
+        this.array[index].photoData,
+        '" />'
+      ].join("");
+      divPhoto.insertBefore(span, null);
+
+      divPhoto.appendChild(divPhotos);
       divConteiner.appendChild(divPhoto);
     });
 
-
     blogDiv.forEach(item => {
       divBlog = document.createElement(item.divBlog);
-      divBlog.style.cssText = `top:${blogPosY}px;left:${blogPosX}px;`;
+      divBlog.style.cssText = `top:${blogPosY}px; left:${blogPosX}px;`;
       divBlog.className = item.class;
       divBlog.textContent = item.text;
+      divBlog.onmousedown = event => {
+        divConteiner.addEventListener("mousemove", trackMouseDivBlog);
+        deltaYBlog = event.pageY - divBlog.offsetTop;
+        deltaXBlog = event.pageX - divBlog.offsetLeft;
+      };
+      divBlog.onmouseup = () => {
+        divConteiner.removeEventListener("mousemove", trackMouseDivBlog);
+        this.array[index].blogPosX = divBlog.offsetLeft;
+        this.array[index].blogPosY = divBlog.offsetTop;
+      };
       divConteiner.appendChild(divBlog);
     });
     divConteiner.appendChild(spanPhoto);
@@ -120,6 +198,7 @@ class createComponent extends React.Component {
         item.photoDiv,
         item.blogDiv,
         item.colorAllDiv,
+        item.photoData,
         item.photoPosX,
         item.photoPosY,
         item.blogPosX,
@@ -135,11 +214,12 @@ class createComponent extends React.Component {
       photoDiv: [],
       blogDiv: [],
       colorAllDiv: "",
+      photoData: "",
       photoPosX: 600,
       photoPosY: 100,
       blogPosX: 100,
       blogPosY: 100,
-      blogText: "Hi There",
+      blogText: "Hi There"
     };
     this.array.push(obj);
     this.createHtml();
@@ -149,7 +229,7 @@ class createComponent extends React.Component {
     return (
       <div>
         <div onClick={this.addComponent} className={styles.addComponent}>
-          <img src={plus} alt="plus" />
+          +
         </div>
         <div id="board" className={styles.board}></div>
       </div>

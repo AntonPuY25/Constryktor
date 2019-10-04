@@ -1,14 +1,14 @@
 import React from 'react';
 import Header from './header/header';
 import Body from './body/body';
-import Create from "./header/createConteiner/create"
+import CreateComponent from "./header/createConteiner/createTest"
 
 
 const App =()=>{
   return(
     <div>
 <Header/>
-<Create/>
+<CreateComponent/>
 <Body/>
 
     </div>

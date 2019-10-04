@@ -5,8 +5,8 @@ nav{
     background-color:rgba(141, 156, 163, 0.274);
 }
 .logo{
-    padding: 30px;
-    border: 1px solid black;
+    padding: 50px;
+    border: 0px;
     width:40px;
     height: 30px;
     text-align: center;
@@ -17,7 +17,7 @@ nav{
 }
 .imgLogo img{
     width:100px;
-     height:90px;
+     height:100px;
    position: absolute;
    left:0px;
     top:0px;
@@ -29,7 +29,7 @@ nav{
 .logo:hover{
     padding: 40px;
      cursor: pointer;
-       border: 0.5px solid rgb(241, 150, 150);
+      border: 0px;
 
 }
 .hideInpit{
@@ -39,7 +39,7 @@ nav{
     width: 20px;
     position: relative;
     top:25px;
-    left:80px;
+    left:55px;
 cursor: pointer;
 float: left;
 }
