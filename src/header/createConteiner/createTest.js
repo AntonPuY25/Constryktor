@@ -5,28 +5,49 @@ class createComponent extends React.Component {
     super(props);
 this.widthImgRef = React.createRef();
 this.heightImgRef = React.createRef();
+this.widthBlogRef = React.createRef();
+this.heightBlogRef = React.createRef();
+this.colorBlogRef = React.createRef();
+this.colorTextBlogRef = React.createRef();
+this.sizeTextBlogRef = React.createRef();
+this.heightComponentRef = React.createRef();
+this.colorComponentRef = React.createRef();
+this.showImg = React.createRef();
+this.showBlog = React.createRef();
+this.showComponent = React.createRef();
     this.state = {};
   }
   arrayComponent = [];
   arrayBlog = [];
   arrayImg = [];
 
-  createComponent = (color, width, height) => {
-    let divConteiner = document.createElement("div");
+  createComponent = (color, height) => {
+ 
+let divConteiner = document.createElement("div");
     divConteiner.className = styles.allDiv;
+   
+    divConteiner.style.cssText = `height:${height}px;background-color: ${color};`;
+  
     document.querySelector("#boardConteiner").appendChild(divConteiner);
+
+    
   };
 
-  createBlog = (posX, posY, text, index) => {
+  createBlog = (height,width,color,colorText,sizeText,posX, posY, text, index) => {
     var divBlog;
     var deltaYBlog;
     var deltaXBlog;
     var trackMouseDivBlog = event => {
       divBlog.style.cssText = `top:${event.pageY -
-        deltaYBlog}px;left:${event.pageX - deltaXBlog}px;`;
+        deltaYBlog}px;left:${event.pageX - deltaXBlog}px;
+        height:${height}px;width:${width}px;
+        background-color: ${color};color:${colorText}; font-size:${sizeText}px;`;
+        
     };
     divBlog = document.createElement("div");
-    divBlog.style.cssText = `top:${posY}px; left:${posX}px;`;
+    divBlog.style.cssText = `top:${posY}px; left:${posX}px;
+    height:${height}px;width:${width}px;
+    background-color: ${color}; color:${colorText};font-size:${sizeText}px;`;
     divBlog.className = styles.blogInner;
     divBlog.onmousedown = event => {
       window.addEventListener("mousemove", trackMouseDivBlog);
@@ -148,14 +169,15 @@ this.heightImgRef = React.createRef();
   component = () => {
     document.querySelector("#boardConteiner").innerHTML = "";
     this.arrayComponent.forEach((item, index) => {
-      this.createComponent(item.color, item.width, item.height, index);
+      this.createComponent(item.color, item.height, index);
     });
   };
 
   blog = () => {
     document.querySelector("#boardBlog").innerHTML = "";
     this.arrayBlog.forEach((item, index) => {
-      this.createBlog(item.blogPosX, item.blogPosY, item.blogText, index);
+      this.createBlog(item.height,item.width,item.color,item.colorText,item.sizeText,
+        item.blogPosX, item.blogPosY, item.blogText, index);
     });
   };
 
@@ -169,22 +191,53 @@ this.heightImgRef = React.createRef();
 
   addComponent = () => {
     let obj = {
-      color: "yellowgreen",
+      color: "",
       width: "100%",
       height: "400px"
     };
-    this.arrayComponent.push(obj);
+    let heightComponent =this.heightComponentRef.current.value.replace (/[^\d]/g, '') 
+    let colorComponent = this.colorComponentRef.current.value;
+    if(heightComponent < 200 && colorComponent ){
+      alert("error")
+    }else{
+    
+      obj.height = heightComponent;
+      obj.color = colorComponent;
+      this.arrayComponent.push(obj);
     this.component();
+    }
+    
   };
 
   addBlog = () => {
     let obj = {
+      height:"",
+      width:"",
+      color:"yellowgreen",
+      colorText:"black",
+      sizeText:"",
       blogPosX: 100,
       blogPosY: 100,
       blogText: "Hi There"
     };
-    this.arrayBlog.push(obj);
-    this.blog();
+    let heighBlog = this.heightBlogRef.current.value.replace (/[^\d]/g, '') 
+    let widthBlog = this.widthBlogRef.current.value.replace (/[^\d]/g, '') 
+    let colorBlog = this.colorBlogRef.current.value;
+    let colorText = this.colorTextBlogRef.current.value;
+    let sizeText = this.sizeTextBlogRef.current.value;
+    if(heighBlog < 100 ||  widthBlog < 100 || sizeText < 10 ){
+      alert("error")
+    }else{
+    
+      obj.height = heighBlog;
+      obj.width = widthBlog;
+      obj.color = colorBlog;
+      obj.colorText = colorText;
+      obj.sizeText = sizeText;
+      this.arrayBlog.push(obj);
+      this.blog();
+    }
+  
   };
 
   addImg = () => {
@@ -199,38 +252,141 @@ this.heightImgRef = React.createRef();
     this.photo();
   };
   addImages = ()=>{
-   console.log(this.widthImgRef.current.value.replace (/[^\d]/g, ''))
+    this.showImg.current.style.display = (this.showImg.current.style.display === 'block') ? '' : 'block'
 
   }
- 
+  addBlogs = ()=>{
+    this.showBlog.current.style.display = (this.showBlog.current.style.display === 'block') ? '' : 'block'
+
+  }
+  addComponents = ()=>{
+    this.showComponent.current.style.display = (this.showComponent.current.style.display === 'block') ? '' : 'block'
+
+  }
 
   render() {
     return (
       <div>
-        <div onClick={this.addComponent} className={styles.addComponent}>
-          + Component
-        </div>
-        <div onClick={this.addBlog} className={styles.addBlog}>
-          + Blog
-        </div>
+      
+      
 
+        <button type="button" onClick={this.addImages}
+ className="btn btn-success">ADD IMAGES</button>
 
-        <div className={styles.allImg}>
-        <div onClick={this.addImg} className={styles.addImg}>
-          + IMG
-        </div>
+        <div className={styles.allImg}  ref={this.showImg}>
         <div className="input-group">
   <div className="input-group-prepend">
     <span className="input-group-text" >Ширина и Высота</span>
   </div>
+        
+      
   <input type="text" className="form-control"  ref={this.widthImgRef}/>
   <input type="text" className="form-control" ref={this.heightImgRef}/>
-
+ 
+        </div>
+        <div onClick={this.addImg} className={styles.addImg}>
+          + IMG
         </div>
         </div>
       
-        <button type="button" onClick={this.addImages} className="btn btn-success">ADD IMAGES</button>
+      
+
+        <button type="button" onClick={this.addBlogs}
+ className="btn btn-success">ADD BLOG</button>
+
+        <div className={styles.allBlog}  ref={this.showBlog}>
+        <div className="input-group">
+  <div className="input-group-prepend">
+    <span className="input-group-text" >Ширина и Высота</span>
+  </div>
         
+      <div>
+      <input type="text" className="form-control"  ref={this.widthBlogRef}/>
+  <input type="text" className="form-control" ref={this.heightBlogRef}/>
+      </div>
+
+  <div className={styles.colors}>
+        <div>
+          Change color blog
+          <br/>
+          <select ref={this.colorBlogRef}>
+          <option id={styles.greenConteine} value="Green">Green</option>
+  <option id={styles.blackConteine} value="Black">Black</option>
+<option id={styles.blueConteine} value="Blue">Blue</option>
+<option id={styles.whiteConteiner} value="White">White</option>
+<option  id={styles.redConteine} value="Red">Red</option>
+<option id={styles.yellowConteine} value="Yellow">Yellow</option>
+</select>
+          
+        </div>
+        </div>
+        <br/><br/><br/>
+        <div className={styles.colors}>
+        <div>
+          Change color text
+          <br/>
+          <select ref={this.colorTextBlogRef}>
+          <option id={styles.whiteConteiner} value="White">White</option>
+          <option id={styles.greenConteine} value="Green">Green</option>
+  <option id={styles.blackConteine} value="Black">Black</option>
+<option id={styles.blueConteine} value="Blue">Blue</option>
+
+<option  id={styles.redConteine} value="Red">Red</option>
+<option id={styles.yellowConteine} value="Yellow">Yellow</option>
+</select>
+          
+        </div>
+        </div>
+        <div className="input-group-prepend">
+    <span className="input-group-text" >Размер шрифта</span>
+  </div>
+        
+      <div>
+      <input type="text" className="form-control"  ref={this.sizeTextBlogRef}/>
+        </div>
+
+        </div>
+        <div onClick={this.addBlog} className={styles.addBlog}>
+          + Blog
+        </div>
+        </div>
+        
+
+
+        <button type="button" onClick={this.addComponents}
+ className="btn btn-success">ADD COMPONENT</button>
+
+        <div className={styles.allBlog}  ref={this.showComponent}>
+        <div className="input-group">
+  <div className="input-group-prepend">
+  <div><span className="input-group-text"  > Высота</span></div>
+    
+  </div>
+        
+      
+ 
+  <input type="text" className="form-control"  ref={this.heightComponentRef}/>
+ 
+        </div>
+        <div className={styles.colors}>
+        <div>
+          Change color
+          <br/>
+          <select ref={this.colorComponentRef}>
+          <option id={styles.greenConteine} value="Green">Green</option>
+  <option id={styles.blackConteine} value="Black">Black</option>
+<option id={styles.blueConteine} value="Blue">Blue</option>
+<option id={styles.whiteConteiner} value="White">White</option>
+<option  id={styles.redConteine} value="Red">Red</option>
+<option id={styles.yellowConteine} value="Yellow">Yellow</option>
+</select>
+          
+        </div>
+        </div>
+        <div onClick={this.addComponent} className={styles.addComponent}>
+          + Component
+        </div>
+        </div>
         <div id="boardConteiner" className={styles.boardConteiner}></div>
         <div id="boardBlog" className={styles.boardBlog}></div>
         <div id="boardImg" className={styles.boardImg}></div>
