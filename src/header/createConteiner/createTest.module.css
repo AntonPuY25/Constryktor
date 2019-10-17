@@ -193,3 +193,16 @@ display:none;
     cursor: pointer;
     margin: 5px;
 }
+
+#clearButtoms{
+    position: fixed;
+    bottom:10px;
+    right: 10px;
+  
+}
+#safe{
+    position: fixed;
+    bottom:10px;
+    right: 150px;
+  
+}

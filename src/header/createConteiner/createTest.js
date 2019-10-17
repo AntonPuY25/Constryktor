@@ -15,12 +15,21 @@ this.colorComponentRef = React.createRef();
 this.showImg = React.createRef();
 this.showBlog = React.createRef();
 this.showComponent = React.createRef();
+this.photoButtom = React.createRef();
+this.blogButtom = React.createRef();
+this.componentButtom = React.createRef();
+this.clearButtom = React.createRef();
+this.safeButtom = React.createRef();
     this.state = {};
   }
+
   arrayComponent = [];
   arrayBlog = [];
   arrayImg = [];
 
+  componentDidMount(){
+        this.own()
+  }
   createComponent = (color, height) => {
  
 let divConteiner = document.createElement("div");
@@ -34,6 +43,7 @@ let divConteiner = document.createElement("div");
   };
 
   createBlog = (height,width,color,colorText,sizeText,posX, posY, text, index) => {
+
     var divBlog;
     var deltaYBlog;
     var deltaXBlog;
@@ -93,15 +103,17 @@ let divConteiner = document.createElement("div");
     var deltaYBlog;
     var deltaXBlog;
     var divPhotos;
-    var widthPhoto = this.widthImgRef.current.value.replace (/[^\d]/g, '');
-    var heightPhoto = this.heightImgRef.current.value.replace (/[^\d]/g, '');
-    console.log(widthPhoto)
+
     var trackMouseDivBlog = event => {
       divBlog.style.cssText = `top:${event.pageY -
-        deltaYBlog}px;left:${event.pageX - deltaXBlog}px;`;
+        deltaYBlog}px;left:${event.pageX - deltaXBlog}px;
+     
+        `;
     };
     divBlog = document.createElement("div");
-    divBlog.style.cssText = `top:${posY}px; left:${posX}px;`;
+    divBlog.style.cssText = `top:${posY}px; left:${posX}px;
+   
+    `;
     divBlog.className = styles.photoBlog;
     divBlog.onmousedown = event => {
       window.addEventListener("mousemove", trackMouseDivBlog);
@@ -112,17 +124,13 @@ let divConteiner = document.createElement("div");
     divBlog.onmouseup = () => {
       window.removeEventListener("mousemove", trackMouseDivBlog);
       this.arrayImg[index].photoPosX = divBlog.offsetLeft;
+     
       this.arrayImg[index].photoPosY = divBlog.offsetTop;
     };
   
     
         
-       if( widthPhoto <10 || heightPhoto < 10)
-       {
-         alert("ERROR")
-       }else{
-         this.arrayImg[index].widthImg = widthPhoto;
-         this.arrayImg[index].heightImg = heightPhoto;
+       
         divPhotos = document.createElement("input");
         divPhotos.type = "file";
         divPhotos.className = styles.hideInput;
@@ -133,28 +141,28 @@ let divConteiner = document.createElement("div");
           let reader = new FileReader();
           reader.onload = (event => {
             return event => {
-              this.arrayImg[index].photoData.push(event.target.result);
-         
-            let span = document.createElement("div");
-            span.className = styles.hideInput;
+         this.arrayImg[index].photoData = event.target.result
+         console.log( this.arrayImg[index].photoData)
+       
+              divBlog.className = styles.hideInput;
             var images = document.createElement("img");
-            images.src = this.arrayImg[index].photoData;
-            images.style.cssText = `width:${width}px;height:${height}px;`
+            images.src =  this.arrayImg[index].photoData;
+            images.style.cssText = `width:${width}px;height:${height}px;`;
           
-             span.appendChild(images);
+            divBlog.appendChild(images);
             images.onmousedown= ()=>{
               return false;
             }
     
-            span.appendChild(images);
-            divBlog.insertBefore(span, null);
+
+            
              
             };
           })(f);
     
           reader.readAsDataURL(f);
 
-        };
+   
         divBlog.appendChild(divPhotos);
         document.querySelector("#boardImg").appendChild(divBlog);
        }
@@ -182,6 +190,7 @@ let divConteiner = document.createElement("div");
   };
 
   photo = () => {
+  
     document.querySelector("#boardImg").innerHTML = "";
     this.arrayImg.forEach((item, index) => {
       this.createPhoto(item.photoPosX, item.photoPosY, item.photoData, 
@@ -191,9 +200,9 @@ let divConteiner = document.createElement("div");
 
   addComponent = () => {
     let obj = {
-      color: "",
-      width: "100%",
-      height: "400px"
+      height:"",
+      color:"",
+    
     };
     let heightComponent =this.heightComponentRef.current.value.replace (/[^\d]/g, '') 
     let colorComponent = this.colorComponentRef.current.value;
@@ -244,12 +253,23 @@ let divConteiner = document.createElement("div");
     let obj = {
       photoPosX: 600,
       photoPosY: 100,
-      photoData: [],
-      widthImg:200,
-      heightImg:200,
+      photoData: "",
+      widthImg:"",
+      heightImg:"",
     };
-    this.arrayImg.push(obj);
-    this.photo();
+    let widthImg = this.widthImgRef.current.value.replace (/[^\d]/g, '') 
+    let heightImg = this.heightImgRef.current.value.replace (/[^\d]/g, '') 
+    if(widthImg < 100 ||  heightImg < 100){
+      alert("error")
+    }else{
+    
+      obj.heightImg = heightImg;
+      obj.widthImg = widthImg;
+     
+      this.arrayImg.push(obj);
+      this.photo();
+    }
+  
   };
   addImages = ()=>{
     this.showImg.current.style.display = (this.showImg.current.style.display === 'block') ? '' : 'block'
@@ -263,14 +283,48 @@ let divConteiner = document.createElement("div");
     this.showComponent.current.style.display = (this.showComponent.current.style.display === 'block') ? '' : 'block'
 
   }
+clearButtoms = ()=>{
+  this.photoButtom.current.style.display = 'none';
+  this.blogButtom.current.style.display = 'none';
+  this.safeButtom.current.style.display = 'none';
+  this.componentButtom.current.style.display = 'none';
+  this.clearButtom.current.style.display = 'none';
+}
+safe = ()=>{
+ 
+  
+
+ 
+  localStorage.allCMSBlog = JSON.stringify(this.arrayBlog);
+  localStorage.allCMSPhoto = JSON.stringify(this.arrayImg);
+  localStorage.allCMSComponent = JSON.stringify(this.arrayComponent);
+
+}
+own = ()=>{
+  if (localStorage.allCMSBlog && localStorage.allCMSPhoto && localStorage.allCMSComponent) {
+    this.arrayComponent = JSON.parse(localStorage.allCMSComponent);
+    this.arrayBlog = JSON.parse(localStorage.allCMSBlog);
+    this.arrayImg = JSON.parse(localStorage.allCMSPhoto);
+   
+    this.blog();
+    this.component();
+    this.photo();
+    }else{
+      alert("error")
+    }
+}
+
+
+
 
   render() {
+
     return (
       <div>
       
       
 
-        <button type="button" onClick={this.addImages}
+        <button type="button" ref={this.photoButtom} onClick={this.addImages}
  className="btn btn-success">ADD IMAGES</button>
 
         <div className={styles.allImg}  ref={this.showImg}>
@@ -291,7 +345,7 @@ let divConteiner = document.createElement("div");
       
       
 
-        <button type="button" onClick={this.addBlogs}
+        <button type="button" ref={this.blogButtom} onClick={this.addBlogs}
  className="btn btn-success">ADD BLOG</button>
 
         <div className={styles.allBlog}  ref={this.showBlog}>
@@ -353,7 +407,7 @@ let divConteiner = document.createElement("div");
         
 
 
-        <button type="button" onClick={this.addComponents}
+        <button type="button" ref={this.componentButtom} onClick={this.addComponents}
  className="btn btn-success">ADD COMPONENT</button>
 
         <div className={styles.allBlog}  ref={this.showComponent}>
@@ -391,8 +445,15 @@ let divConteiner = document.createElement("div");
         <div id="boardBlog" className={styles.boardBlog}></div>
         <div id="boardImg" className={styles.boardImg}></div>
       
-       
+
+      
+        <button type="button" id={styles.clearButtoms} ref={this.clearButtom} onClick={this.clearButtoms}
+ className="btn btn-success">Clear Buttoms</button>
+          <button type="button" id={styles.safe} ref={this.safeButtom} onClick={this.safe}
+ className="btn btn-success">Safe</button>
+ 
       </div>
+     
     );
   }
 }
